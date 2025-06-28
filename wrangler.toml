@@ -1,0 +1,89 @@
+name = "expo-update-server-x"
+main = "src/worker.ts"
+compatibility_date = "2024-06-25"
+compatibility_flags = ["nodejs_compat"]
+
+# Global bindings for default environment
+[[d1_databases]]
+binding = "DB"
+database_name = "expo-update-server-x"
+database_id = "80399da8-9e36-4b5d-bc7c-dfee5e70758e"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "expo-update-server-x"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "ecd2c94ae1d141f4a25a4d3798e912e1"
+
+# Worker configuration
+[env.production]
+name = "expo-update-server"
+routes = [
+  { pattern = "your-domain.com/*", zone_name = "your-domain.com" }
+]
+
+[env.staging]
+name = "expo-update-server-staging"
+
+# D1 Database bindings
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "expo-updates-db"
+database_id = "9182da1c-f1de-46be-a6bc-6d50f95c4d8f"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "expo-updates-db-staging"
+database_id = "TBD" # Will be populated when we create the staging database
+
+# R2 Object Storage bindings
+[[env.production.r2_buckets]]
+binding = "BUCKET"
+bucket_name = "expo-updates-storage"
+
+[[env.staging.r2_buckets]]
+binding = "BUCKET"
+bucket_name = "expo-updates-storage-staging"
+
+# KV Storage bindings
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "47d57e5a1a344e8ca657b39755962973"
+
+[[env.staging.kv_namespaces]]
+binding = "CACHE"
+id = "47d57e5a1a344e8ca657b39755962973"
+
+# Development environment (uses local storage)
+[env.development]
+name = "expo-update-server-dev"
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "expo-updates-db"
+database_id = "9182da1c-f1de-46be-a6bc-6d50f95c4d8f"
+
+[[env.development.r2_buckets]]
+binding = "BUCKET"
+bucket_name = "expo-updates-storage-dev"
+
+[[env.development.kv_namespaces]]
+binding = "CACHE"
+id = "47d57e5a1a344e8ca657b39755962973"
+preview_id = "b6fdb5eaa80c430285f3a329d4a70285"
+
+# Build configuration
+[build]
+command = "npm run build"
+
+# Variables and secrets (non-sensitive defaults)
+[vars]
+ENVIRONMENT = "development"
+PUBLIC_URL = "https://expo-update-server.expo-quickpush.workers.dev"
+
+# For production, these will be set via wrangler secret put
+# [secrets]
+# UPLOAD_SECRET_KEY = "your-upload-authentication-key"
+# CODE_SIGNING_PRIVATE_KEY = "your-rsa-private-key" 
